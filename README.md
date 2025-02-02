@@ -309,7 +309,7 @@ Consenso de nível baixo (Low Level Consensus) em blockchain refere-se aos mecan
 
 - **Stellar Consensus Protocol (SCP):**
 
-  - Utiliza o protocolo Federated Byzantine Agreement (FBA).
+  - Utiliza o protocolo [Federated Byzantine Agreement (FBA)](./docs/protocol-fba.md).
 
   - Os nós se dividem em pequenos grupos chamados de quorum slices.
 
