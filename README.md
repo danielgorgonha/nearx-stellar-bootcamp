@@ -395,9 +395,402 @@ contract SimpleStorage {
 
 ## Aula 2
 
+### 0. Blockchain paths
+
+O universo blockchain oferece diferentes caminhos de carreira, cada um com seu foco, tecnologias e desafios. Veja os principais:
+
+- **Core Blockchain Engineer** (Node)
+  - Foco: redes, criptografia, protocolo de consenso, DevOps
+  - Nível: Avançado
+  - Desafio: Exige conhecimento profundo em sistemas distribuídos, segurança e infraestrutura.
+
+- **SDK Engineer** (SDK)
+  - Foco: desenvolvimento de SDKs em linguagens como Python, JavaScript, Rust, Ruby, Golang
+  - Nível: Intermediário a Avançado
+  - Desafio: Precisa entender tanto o funcionamento da blockchain quanto boas práticas de desenvolvimento de software.
+
+- **Smart Contract Engineer** (Smartcontract)
+  - Foco: desenvolvimento de contratos inteligentes
+    - EVM: Solidity, Vyper
+    - No-EVM: Rust, Golang
+  - Nível: Intermediário a Avançado
+  - Desafio: Requer domínio de linguagens específicas e atenção redobrada à segurança dos contratos.
+
+- **Integration/Web3 Engineer** (Application)
+  - Foco: integração de aplicações web3 usando bibliotecas e SDKs (web3js, ethers.js, viem, cardano SDK, etc.)
+  - Nível: Intermediário
+  - Desafio: Precisa conectar frontends, carteiras e contratos inteligentes, garantindo boa experiência do usuário.
+
+> **Observação:** Cada trilha tem níveis de complexidade e desafios próprios. O ideal é começar pelo básico e ir avançando conforme o interesse e necessidade do projeto ou carreira.
+
+---
+
+### 1. Consenso da Stellar
+
+O protocolo de consenso da Stellar, chamado **Stellar Consensus Protocol (SCP)**, é um mecanismo federado que permite que a rede alcance consenso de forma rápida, segura e sem a necessidade de mineração. Esse tema é especialmente relevante para quem deseja atuar como **Core Blockchain Engineer**, pois envolve conceitos avançados de redes distribuídas, segurança e tolerância a falhas.
+
+- O SCP permite que múltiplas entidades (nós) concordem sobre o estado da rede, mesmo em ambientes abertos e sem confiança prévia.
+- Diferente de blockchains baseadas em Proof of Work (PoW), o SCP é eficiente energeticamente e proporciona confirmações rápidas.
+- Para desenvolvedores de aplicações e contratos, é importante entender o básico do consenso, mas o aprofundamento é mais relevante para quem deseja contribuir com o núcleo do protocolo.
+- [Documentação oficial do Stellar Consensus Protocol (SCP)](https://stellar.org/developers-blog/stellar-consensus-protocol)
+
+---
+
+### 2. Stellar Stack
+
+A **Stellar Stack** é composta por diferentes camadas, cada uma responsável por uma parte fundamental do ecossistema. Entender essa arquitetura ajuda a visualizar onde cada perfil profissional pode atuar:
+
+<p align="center">
+  <img src="aula02/assets/stellar-stack.png" alt="Stellar Stack" width="600"/>
+</p>
+
+- **Network (Core Protocol):** Camada base, responsável pelo funcionamento do protocolo central da Stellar.
+- **Data Availability:** Serviços que garantem o acesso e indexação dos dados da rede (RPC, Horizon, Indexers, Hubble).
+- **Developer Tooling:** Ferramentas para desenvolvedores, como SDKs, CLI e Laboratory.
+- **Application:** Aplicações finais, como carteiras, seletores de carteira, plataformas de ancoragem e SDP.
+
+[Documentação oficial da Stellar Stack](https://developers.stellar.org/docs/learn/architecture/)
+
+Cada camada oferece oportunidades para diferentes perfis de desenvolvedores, desde quem trabalha no núcleo do protocolo até quem cria aplicações para o usuário final.
+
+#### Explicando cada área da Stellar Stack
+
+- **Network (Core Protocol):**
+  - É o núcleo da rede Stellar, responsável por validar transações, manter o consenso e garantir a segurança e integridade do ledger. Aqui está o código-fonte do protocolo, rodando em cada nó da rede, e é onde ocorrem as decisões fundamentais sobre o estado global da blockchain.
+
+- **Data Availability:**
+  - Camada que garante o acesso, consulta e indexação dos dados da rede. Inclui:
+    - **RPC:** Interfaces para comunicação remota com a rede.
+    - **Horizon:** API REST que permite que aplicações e usuários interajam facilmente com a blockchain Stellar, consultando contas, transações, operações e mais.
+    - **Indexers:** Serviços que organizam e facilitam buscas rápidas por dados específicos na blockchain.
+    - **Hubble:** Ferramenta de indexação e análise de dados da rede.
+
+- **Developer Tooling:**
+  - Ferramentas que facilitam o desenvolvimento de aplicações e integrações com a Stellar:
+    - **SDKs:** Bibliotecas em várias linguagens (Python, JavaScript, Go, etc.) para interagir com a rede Stellar de forma programática.
+    - **CLI:** Interfaces de linha de comando para executar operações, testar e interagir com a rede.
+    - **Laboratory:** Ferramenta web para criar, simular e testar transações Stellar de forma visual e interativa.
+
+- **Application:**
+  - Camada voltada para o usuário final, onde estão as aplicações construídas sobre a rede Stellar:
+    - **Wallets:** Carteiras digitais para armazenar, enviar e receber ativos Stellar.
+    - **Wallet Selector:** Ferramenta para escolher e conectar diferentes carteiras em aplicações.
+    - **Anchor Platform:** Soluções para integração de instituições financeiras (anchors) com a rede Stellar, facilitando depósitos e saques de moedas fiduciárias.
+    - **SDP (Stellar Disbursement Platform):** Plataforma para distribuição de pagamentos em massa usando Stellar.
+
 - Fundamentos sobre Stellar.
 - Configurando FullNode e DevOps.
 - Interagindo com o FullNode usando SDK.
+
+### 3. SDKs da Stellar
+
+Os **SDKs (Software Development Kits)** da Stellar são bibliotecas que facilitam a integração de aplicações com a rede Stellar, permitindo criar contas, enviar transações, consultar dados e muito mais de forma programática.
+
+#### Onde encontrar os SDKs oficiais?
+
+A lista completa e atualizada dos SDKs oficiais e mantidos pela comunidade pode ser encontrada na documentação oficial da Stellar:
+
+- [SDKs na documentação oficial da Stellar](https://developers.stellar.org/docs/software-and-sdks/)
+
+#### Linguagens disponíveis
+
+A Stellar oferece SDKs oficiais e de comunidade para diversas linguagens, incluindo:
+
+- **JavaScript/TypeScript** – Ideal para aplicações web e Node.js.
+- **Python** – Muito usado para scripts, automações e backend.
+- **Go** – Ótimo para aplicações de alta performance e serviços backend.
+- **Java** – Usado em aplicações corporativas e Android.
+- **C#** – Para aplicações .NET.
+- **Ruby** – Para desenvolvedores Ruby on Rails.
+- **Scala, PHP, Dart, Rust, Swift** – Outras opções mantidas pela comunidade.
+
+#### Incentivo à criação de novos SDKs
+
+A Stellar incentiva ativamente a comunidade a criar e manter SDKs em novas linguagens, ampliando o ecossistema e facilitando o acesso de desenvolvedores de diferentes backgrounds. Se você domina uma linguagem que ainda não possui um SDK maduro, pode contribuir criando um novo SDK ou ajudando a evoluir os existentes.
+
+> **Dica:** Sempre confira a documentação oficial para ver exemplos, tutoriais e o status de cada SDK.
+
+### 4. Lista de Operações da Stellar
+
+A Stellar oferece uma variedade de operações que podem ser executadas em transações na rede. Cada operação representa uma ação específica, como criar uma conta, realizar um pagamento, gerenciar ofertas, criar ou gerenciar ativos, entre outras.
+
+#### Principais operações disponíveis:
+
+- **Create Account:** Cria uma nova conta na rede Stellar.
+- **Payment:** Envia ativos (XLM ou tokens) de uma conta para outra.
+- **Path Payment:** Realiza pagamentos que podem envolver conversão automática de ativos ao longo de um caminho.
+- **Manage Offer:** Cria, atualiza ou remove ofertas de compra/venda de ativos no livro de ordens.
+- **Create Passive Offer:** Cria uma oferta passiva que não consome ofertas existentes.
+- **Set Options:** Altera configurações da conta, como chaves de assinatura e limites.
+- **Change Trust:** Adiciona ou remove confiança em um ativo/token.
+- **Allow Trust:** Permite que outra conta confie em um ativo emitido.
+- **Account Merge:** Mescla o saldo de uma conta em outra e remove a conta original.
+- **Inflation:** (Obsoleta) Participava do mecanismo de inflação da rede.
+- **Manage Data:** Armazena ou remove dados arbitrários associados a uma conta.
+- **Bump Sequence:** Avança o número de sequência da conta para evitar repetições de transações.
+
+#### Onde consultar a lista completa?
+
+A lista oficial e detalhada de todas as operações suportadas pela Stellar, incluindo exemplos de uso e parâmetros, está disponível na documentação:
+
+- [Stellar Operations - Official Documentation](https://developers.stellar.org/docs/learn/concepts/list-of-operations/)
+
+> **Dica:** Entender as operações é fundamental para criar aplicações completas e explorar todo o potencial da rede Stellar.
+
+### 5. Estruturas de Dados da Stellar
+
+A Stellar utiliza diversas estruturas de dados para organizar, registrar e validar todas as informações e transações que ocorrem na rede. Entender essas estruturas é essencial para compreender como a blockchain da Stellar funciona “por baixo dos panos”.
+
+#### Principais estruturas de dados:
+
+- **Ledger (Livro-razão):**
+  - O ledger é o registro global e imutável de todas as transações e estados das contas na rede Stellar.
+  - Cada ledger é como um “bloco” que contém um snapshot do estado da rede em um determinado momento.
+  - Os ledgers são numerados sequencialmente e cada um referencia o anterior, formando uma cadeia (blockchain).
+  - Um ledger inclui: transações validadas, resultados das operações, informações de contas, ofertas, trustlines, dados e muito mais.
+
+- **Transaction (Transação):**
+  - Uma transação é um conjunto de operações agrupadas e enviadas para serem processadas em um ledger.
+  - Cada transação possui um remetente, uma assinatura, um número de sequência e pode conter múltiplas operações.
+
+- **Operation (Operação):**
+  - Cada operação é uma ação individual dentro de uma transação (ex: pagamento, criação de conta, alteração de trustline, etc).
+  - Uma transação pode conter várias operações.
+
+- **Account (Conta):**
+  - Representa um usuário ou entidade na rede Stellar.
+  - Cada conta possui um endereço público, saldo, número de sequência, configurações de segurança, trustlines e dados associados.
+
+- **Trustline:**
+  - Uma trustline é uma relação de confiança entre uma conta e um ativo/token, permitindo que a conta mantenha e transacione aquele ativo.
+
+- **Offer (Oferta):**
+  - Ofertas são ordens de compra ou venda de ativos no livro de ordens descentralizado da Stellar.
+
+- **Data Entry:**
+  - Permite que contas armazenem pequenos pedaços de dados arbitrários na rede.
+
+#### Onde aprender mais?
+
+A documentação oficial da Stellar traz detalhes técnicos e exemplos de cada estrutura:
+
+- [Stellar Data Structures - Official Documentation](https://developers.stellar.org/docs/learn/concepts/data-structures/)
+
+> **Dica:** Compreender as estruturas de dados é fundamental para quem deseja criar integrações avançadas, explorar dados históricos ou contribuir para o desenvolvimento do protocolo.
+
+### 6. SEPs (Stellar Ecosystem Proposals)
+
+Os **SEPs (Stellar Ecosystem Proposals)** são propostas de padronização criadas pela comunidade e pela equipe da Stellar para definir regras, formatos e melhores práticas para o desenvolvimento de aplicações, integrações e serviços no ecossistema Stellar.
+
+#### O que são SEPs?
+
+- SEPs funcionam como “normas técnicas” que ajudam a garantir a interoperabilidade entre diferentes aplicações, carteiras, exchanges, anchors e outros serviços que utilizam a rede Stellar.
+- Eles abordam desde formatos de arquivos, fluxos de autenticação, APIs, até padrões para emissão de ativos, integração de anchors, KYC, pagamentos, entre outros.
+
+#### Exemplos de SEPs importantes
+
+- **SEP-1:** Padrão para documentação de ativos.
+- **SEP-6:** Protocolo de depósitos e saques fiat via anchors.
+- **SEP-10:** Autenticação de usuários via challenge transaction.
+- **SEP-12:** Padrão para coleta de informações KYC.
+- **SEP-24:** Protocolo de depósitos e saques interativos.
+- **SEP-31:** Pagamentos cross-border entre instituições.
+- **SEP-38:** Cotações de preços para conversão de ativos.
+
+#### Onde encontrar e como usar
+
+- A lista completa de SEPs, com explicações, status e exemplos de implementação, está disponível no repositório oficial:
+  - [Stellar Ecosystem Proposals (SEPs) - Lista oficial](https://github.com/stellar/stellar-protocol/tree/master/ecosystem)
+- Antes de criar uma nova integração ou serviço, é recomendável consultar os SEPs relevantes para garantir compatibilidade e seguir as melhores práticas do ecossistema.
+
+> **Dica:** SEPs são vivos! Eles evoluem conforme a comunidade propõe melhorias e novas necessidades surgem.
+
+### 7. Usando o SDK da Stellar em Python
+
+O **Stellar Python SDK** é uma biblioteca oficial que permite interagir com a rede Stellar de forma simples e eficiente, facilitando a criação de contas, envio de pagamentos, emissão de tokens, consulta de dados e muito mais.
+
+#### Instalação
+
+Você pode instalar o SDK oficial com poetry:
+
+```bash
+poetry install
+```
+
+Ou se preferir usar pip diretamente:
+
+```bash
+pip install stellar-sdk
+```
+
+#### Principais recursos
+
+- **Criação de contas:** Gere chaves, crie contas e configure trustlines.
+- **Pagamentos:** Envie XLM ou tokens entre contas.
+- **Emissão de tokens:** Crie ativos personalizados e distribua para outras contas.
+- **Consulta de dados:** Busque informações sobre contas, transações, operações e ledgers.
+- **Assinatura e envio de transações:** Monte, assine e envie transações para a rede Stellar.
+
+#### Exemplo básico: criando uma conta e enviando um pagamento
+
+```python
+from stellar_sdk import Keypair, Server, TransactionBuilder, Network
+
+# Gerar um par de chaves
+keypair = Keypair.random()
+public_key = keypair.public_key
+secret = keypair.secret
+
+# Conectar ao servidor Horizon (testnet)
+server = Server("https://horizon-testnet.stellar.org")
+
+# Buscar conta existente (exemplo)
+source_account = server.load_account(public_key="SUA_PUBLIC_KEY")
+
+# Criar transação de pagamento
+transaction = (
+    TransactionBuilder(
+        source_account=source_account,
+        network_passphrase=Network.TESTNET_NETWORK_PASSPHRASE,
+        base_fee=100,
+    )
+    .append_payment_op(destination="DESTINO_PUBLIC_KEY", amount="10", asset_code="XLM")
+    .build()
+)
+
+# Assinar e enviar
+transaction.sign("SUA_SECRET_KEY")
+response = server.submit_transaction(transaction)
+print(response)
+```
+
+#### Documentação oficial
+
+- [Stellar Python SDK - Documentação](https://stellar-sdk.readthedocs.io/en/latest/)
+- [Exemplos de uso na documentação oficial](https://developers.stellar.org/docs/software-and-sdks/sdks/python/)
+
+> **Dica:** O SDK Python é ideal para automações, scripts, backends e prototipagem rápida de soluções com Stellar.
+
+### 8. Setup do Node Stellar (setup-node)
+
+A pasta `setup-node` contém tudo o que você precisa para rodar um ambiente local completo da Stellar, incluindo monitoramento com Prometheus e Grafana.
+
+#### O que está incluído?
+
+- **docker-compose.yaml:** Orquestra três serviços:
+  - **stellar:** Sobe um node Stellar local (com suporte a Soroban RPC).
+  - **prometheus:** Coleta métricas do node para monitoramento.
+  - **grafana:** Exibe dashboards interativos para visualização das métricas.
+
+- **prometheus.yml:** Configura o Prometheus para coletar métricas do node Stellar na porta 6061.
+
+- **stellar_dashboard.json:** Dashboard pronto para importar no Grafana, mostrando:
+  - Total de transações processadas (`Total Tx`)
+  - Número do ledger (bloco) mais recente (`Current Blocos (Ledger)`)
+
+#### Como usar
+
+1. **Suba o ambiente com Docker Compose:**
+   ```bash
+   cd aula02/setup-node
+   docker-compose up
+   ```
+2. **Acesse os serviços:**
+   - Node Stellar: http://localhost:8000
+   - Prometheus: http://localhost:9090
+   - Grafana: http://localhost:3000 (usuário/senha padrão: admin/admin)
+
+3. **Importe o dashboard no Grafana:**
+   - Use o arquivo `stellar_dashboard.json` para visualizar as principais métricas do node.
+
+#### Benefícios
+
+- Permite testar, desenvolver e monitorar aplicações Stellar localmente, sem custos.
+- O monitoramento facilita o entendimento do funcionamento do node e a detecção de problemas.
+
+> **Dica:** Esse setup é ideal para quem está aprendendo, desenvolvendo integrações ou testando contratos inteligentes com Soroban.
+
+### 9. Passo a Passo: Levantando e Monitorando a Blockchain Stellar Local
+
+Agora vamos colocar em prática tudo o que aprendemos, levantando um ambiente completo de desenvolvimento Stellar local.
+
+#### Passo 1: Preparar o ambiente
+
+Certifique-se de ter o Docker e Docker Compose instalados:
+
+```bash
+# Verificar se o Docker está rodando
+docker --version
+docker-compose --version
+```
+
+#### Passo 2: Levantar o node Stellar local
+
+```bash
+# Navegar para a pasta do setup
+cd aula02/setup-node
+
+# Subir todos os serviços
+docker-compose up -d
+
+# Verificar se os containers estão rodando
+docker-compose ps
+```
+
+#### Passo 3: Acessar os serviços
+
+- **Node Stellar:** http://localhost:8000
+- **Prometheus:** http://localhost:9090
+- **Grafana:** http://localhost:3000 (admin/admin)
+
+#### Passo 4: Configurar o Grafana
+
+1. Acesse http://localhost:3000
+2. Faça login com admin/admin
+3. Importe o dashboard usando o arquivo `stellar_dashboard.json`
+4. Configure o datasource do Prometheus se necessário
+
+#### Passo 5: Executar os exemplos do SDK
+
+Agora que o node está rodando, você pode executar os exemplos práticos disponibilizados na pasta `aula02/sdk`:
+
+```bash
+# Navegar para a pasta do SDK
+cd aula02/sdk
+
+# Instalar dependências com poetry
+poetry install
+
+# Executar exemplo de pagamento
+cd payment
+poetry run python main.py
+
+# Executar exemplo de criação de token
+cd ../token
+poetry run python main.py
+```
+
+Ou se preferir usar pip diretamente:
+
+```bash
+pip install stellar-sdk
+python main.py
+```
+
+#### O que você verá
+
+- **No Grafana:** Métricas em tempo real do node (transações, ledgers, etc.)
+- **Nos scripts Python:** Criação de contas, pagamentos, emissão de tokens
+- **No console:** Logs das operações sendo executadas na blockchain local
+
+#### Benefícios deste setup
+
+- **Desenvolvimento seguro:** Teste sem custos reais
+- **Monitoramento completo:** Visualize o que acontece na blockchain
+- **Aprendizado prático:** Execute operações reais em ambiente controlado
+- **Preparação para produção:** Entenda como funciona antes de usar a rede principal
+
+> **Dica:** Mantenha este ambiente rodando durante todo o desenvolvimento. Ele será útil para testar contratos Soroban, integrações e novas funcionalidades.
 
 # Aula 3
 

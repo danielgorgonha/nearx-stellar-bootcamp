@@ -16,12 +16,12 @@ distributor = create_bob_wallet()
 print(f"✅ # Distributor public key: {distributor.public_key}")
 
 # Depositar fundos na conta do emissor e do distribuidor
-get_faucet(issuer.public_key, server)
+#get_faucet(issuer.public_key, server)
 # get_faucet(distributor.public_key, server)
 
 # Criar conta no Ledger para distribuidor
 starting_balance = 1000
-create_account(issuer, distributor.public_key, starting_balance, server)
+#create_account(issuer, distributor.public_key, starting_balance, server)
 
 # Criar token personalizado
 ASSET_CODE = "NEARX"
