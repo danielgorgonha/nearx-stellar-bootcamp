@@ -1,8 +1,6 @@
-version: '3'
-
 services:
   stellar:
-    image: stellar/quickstart:testing
+    image: stellar/quickstart:latest
     ports:
       - "8000:8000"
       - "6061:6061"

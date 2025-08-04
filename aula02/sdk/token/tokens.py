@@ -22,7 +22,7 @@ def create_trust_line(issuer_wallet, distributor_wallet, asset_code, amount, ser
         )
         .add_text_memo("Create a trustline")
         .append_change_trust_op(token, amount)
-        .set_timeout(120)
+        .set_timeout(60)
         .build()
     )
 
@@ -63,7 +63,7 @@ def destribution_tokens(issuer_wallet, distributor_wallet, token, amount, server
         )
         .add_text_memo(f"Token distribution {token.code}")
         .append_payment_op(distributor_wallet.public_key, token, amount)
-        .set_timeout(30)
+        .set_timeout(60)
         .build()
     )
 
