@@ -792,19 +792,293 @@ python main.py
 
 > **Dica:** Mantenha este ambiente rodando durante todo o desenvolvimento. Ele será útil para testar contratos Soroban, integrações e novas funcionalidades.
 
-# Aula 3
+## Aula 3: Introdução ao Rust e Smart Contracts Soroban
 
-- Ecosistema de sistema de desenvolvimento Rust.
-- Básico sobre Rust.
-- Basico de smartcontrats Soroban (Hello World).
+### 1. Filosofia do Rust
 
-## Aula 4
+O Rust é uma linguagem de programação que prioriza **segurança, performance e concorrência** sem comprometer a velocidade de execução. Suas principais características incluem:
 
-- Flipando bits (Flipper).
-- Entendo sobre armazenamento (Counter).
-- Avançando em lógica (Task manager).
+- **Segurança de Memória:** Sistema de propriedade que previne erros comuns como vazamentos de memória e referências inválidas
+- **Performance:** Velocidade comparável a C/C++ com garantias de segurança
+- **Concorrência:** Modelo seguro de concorrência que previne condições de corrida
 
-# Aula 5
+### 2. Ecossistema Rust
+
+O ecossistema Rust oferece ferramentas robustas para desenvolvimento:
+
+- **Rustup:** Gerenciador de versões e instalação do Rust
+- **rustc:** Compilador oficial que garante código seguro
+- **Cargo:** Sistema de build e gerenciador de dependências
+- **Crates:** Sistema de pacotes para reutilização de código
+
+### 3. Comparação com Outras Linguagens
+
+| Aspecto | Rust | Python | JavaScript |
+|---------|------|--------|------------|
+| **Segurança** | Alta (sistema de propriedade) | Média | Baixa |
+| **Performance** | Muito alta | Média | Média |
+| **Curva de Aprendizado** | Íngreme | Suave | Suave |
+| **Ecossistema** | Crescente | Maduro | Muito maduro |
+
+### 4. Smart Contracts com Soroban
+
+Soroban é a plataforma de smart contracts da Stellar, permitindo desenvolvimento em Rust:
+
+- **Instalação:** `cargo install --locked soroban-cli`
+- **Target WASM:** `rustup target add wasm32-unknown-unknown`
+- **Desenvolvimento:** Criação, build, teste e deploy de contratos
+- **Interação:** Invocação de funções via CLI
+
+### 5. Exemplo Prático: Hello World
+
+A aula inclui um exemplo completo de smart contract "Hello World" que demonstra:
+- Criação de projeto Soroban
+- Estrutura básica de um contrato
+- Build e deploy
+- Interação com o contrato
+
+> **📚 Para mais detalhes, exemplos práticos e comandos específicos, consulte o [README da Aula 3](./aula03/README.md)**
+
+---
+
+**Recursos Adicionais:**
+- [The Rust Programming Language (The Book)](https://doc.rust-lang.org/book/)
+- [Comprehensive Rust](https://google.github.io/comprehensive-rust/)
+- [Rustlings](https://rustlings.cool)
+- [Rust by Examples](https://doc.rust-lang.org/rust-by-example/)
+
+### 6. Rustlings: Exercícios Práticos
+
+O **Rustlings** é uma ferramenta essencial para aprender Rust através da prática. Ele oferece uma série de exercícios que cobrem desde conceitos básicos até tópicos avançados da linguagem.
+
+#### O que é o Rustlings?
+
+- **Exercícios Progressivos:** 100+ exercícios organizados por dificuldade
+- **Feedback Imediato:** Verificação automática do código com dicas específicas
+- **Aprendizado Prático:** Aprenda corrigindo erros e completando código incompleto
+- **Cobertura Completa:** Desde sintaxe básica até conceitos avançados como ownership, borrowing e lifetimes
+
+#### Como começar
+
+1. **Instalação:**
+   ```bash
+   git clone https://github.com/rust-lang/rustlings
+   cd rustlings
+   cargo install --force --path .
+   ```
+
+2. **Verificar exercícios disponíveis:**
+   ```bash
+   rustlings list
+   ```
+
+3. **Iniciar os exercícios:**
+   ```bash
+   rustlings watch
+   ```
+
+#### Como resolver os exercícios
+
+- **Leia o comentário:** Cada exercício tem instruções claras no código
+- **Analise o erro:** O compilador Rust fornece mensagens detalhadas
+- **Teste suas mudanças:** Use `rustlings verify` para verificar se está correto
+- **Continue progredindo:** Resolva um exercício por vez
+
+#### Exemplos de tópicos cobertos
+
+- **Variáveis e tipos:** `variables`, `functions`, `if`, `move_semantics`
+- **Ownership e Borrowing:** `ownership`, `borrowing`, `lifetimes`
+- **Structs e Enums:** `structs`, `enums`, `error_handling`
+- **Collections:** `vecs`, `strings`, `hashmaps`
+- **Advanced Topics:** `traits`, `generics`, `iterators`
+
+#### Dicas para sucesso
+
+- **Não desista:** A curva de aprendizado é íngreme, mas vale a pena
+- **Leia as mensagens de erro:** Elas são muito informativas
+- **Use a documentação:** `rustlings hint <exercise_name>` para dicas
+- **Pratique regularmente:** Dedique tempo diário aos exercícios
+
+> **💡 Dica:** Rustlings é considerado o melhor caminho para aprender Rust de forma prática. Complete todos os exercícios antes de avançar para projetos mais complexos.
+
+## Aula 4: Smart Contracts Soroban Avançados
+
+### 1. Flipando bits (Flipper)
+
+O contrato **Flipper** é um exemplo fundamental que demonstra como gerenciar estado booleano em smart contracts Soroban. Ele implementa um "flip-flop" que alterna entre `true` e `false`.
+
+#### Conceitos Aprendidos:
+- **Estado Persistente:** Armazenamento de dados na blockchain
+- **Operações Booleanas:** Manipulação de valores true/false
+- **Storage Instance:** Uso do sistema de armazenamento do Soroban
+- **Symbols:** Identificadores para chaves de armazenamento
+
+#### Estrutura do Contrato:
+```rust
+#[contract]
+pub struct Flipper;
+
+#[contractimpl]
+impl Flipper {
+    pub fn flip(env: Env) {
+        let mut state: bool = env.storage().instance().get(&STATE).unwrap_or(false);
+        state = !state;
+        env.storage().instance().set(&STATE, &state);
+    }
+
+    pub fn get_state(env: Env) -> bool {
+        env.storage().instance().get(&STATE).unwrap_or(false)
+    }
+}
+```
+
+#### Funcionalidades:
+- **`flip()`:** Inverte o estado atual (true → false, false → true)
+- **`get_state()`:** Retorna o estado atual do contrato
+
+### 2. Entendendo sobre armazenamento (Counter)
+
+O contrato **Counter** demonstra conceitos avançados de armazenamento e gerenciamento de ciclo de vida em smart contracts.
+
+#### Conceitos Aprendidos:
+- **Contadores:** Incremento de valores numéricos
+- **TTL (Time To Live):** Gerenciamento de expiração de dados
+- **Logging:** Registro de eventos durante execução
+- **Armazenamento Persistente:** Manutenção de estado entre transações
+
+#### Estrutura do Contrato:
+```rust
+#[contract]
+pub struct IncrementContract;
+
+#[contractimpl]
+impl IncrementContract {
+    pub fn increment(env: Env) {
+        let mut count: u32 = env.storage().instance().get(&COUNTER).unwrap_or(0);
+        log!(&env, "count: {}", count);
+        count += 1;
+        env.storage().instance().set(&COUNTER, &count);
+        env.storage().instance().extend_ttl(50, 100);
+    }
+
+    pub fn get_counter(env: Env) -> u32 {
+        env.storage().instance().get(&COUNTER).unwrap_or(0)
+    }
+}
+```
+
+#### Funcionalidades:
+- **`increment()`:** Incrementa o contador e estende o TTL
+- **`get_counter()`:** Retorna o valor atual do contador
+- **TTL Management:** Extensão automática do tempo de vida dos dados
+
+### 3. Avançando em lógica (Task Manager)
+
+O contrato **Task Manager** é um exemplo completo de aplicação CRUD (Create, Read, Update, Delete) que demonstra estruturas de dados complexas e gerenciamento de estado avançado.
+
+#### Conceitos Aprendidos:
+- **Estruturas de Dados:** Definição de tipos customizados
+- **Maps e Collections:** Armazenamento de dados estruturados
+- **Error Handling:** Tratamento de erros com enums
+- **CRUD Operations:** Operações completas de banco de dados
+- **Traits:** Definição de interfaces para contratos
+
+#### Estrutura do Contrato:
+```rust
+#[contracttype]
+pub struct Task {
+    pub id: u32,
+    pub name: Symbol,
+    pub done: bool,
+}
+
+#[contracterror]
+pub enum Error {
+    ReadyTwice = 1,
+    NotFound = 2,
+}
+
+pub trait CRUD {
+    fn add_task(env: Env, name: Symbol) -> u32;
+    fn get_task(env: Env, id: u32) -> Option<Task>;
+    fn get_all_tasks(env: Env) -> Vec<Task>;
+    fn complete_task(env: Env, id: u32) -> Result<bool, Error>;
+    fn delete_task(env: Env, id: u32) -> Result<bool, Error>;
+}
+```
+
+#### Funcionalidades:
+- **`add_task()`:** Cria uma nova tarefa
+- **`get_task()`:** Recupera uma tarefa específica
+- **`get_all_tasks()`:** Lista todas as tarefas
+- **`complete_task()`:** Marca uma tarefa como concluída
+- **`delete_task()`:** Remove uma tarefa
+
+### 4. Configuração e Deploy
+
+#### Setup do Ambiente:
+```bash
+# Configurar rede local
+soroban config network add local \
+    --rpc-url "http://localhost:8000/soroban/rpc" \
+    --network-passphrase "Standalone Network ; February 2017"
+
+# Gerar chave de teste
+soroban keys generate --global bob --network local
+```
+
+#### Build e Deploy:
+```bash
+# Compilar contratos
+soroban contract build
+
+# Deploy do contrato
+soroban contract deploy \
+  --wasm target/wasm32-unknown-unknown/release/<CONTRACT_NAME>.wasm \
+  --source bob \
+  --network local
+```
+
+#### Interação com Contratos:
+```bash
+# Exemplo: Interagir com Task Manager
+soroban contract invoke \
+  --id <CONTRACT_ID> \
+  --source bob \
+  --network local \
+  -- \
+  add_task \
+  --name "Limpar_o_carro"
+```
+
+### 5. Conceitos Avançados Aprendidos
+
+#### Storage Patterns:
+- **Instance Storage:** Para dados que vivem com o contrato
+- **Persistent Storage:** Para dados que sobrevivem ao contrato
+- **TTL Management:** Controle de expiração de dados
+
+#### Error Handling:
+- **Custom Errors:** Definição de tipos de erro específicos
+- **Result Types:** Tratamento seguro de operações que podem falhar
+- **Option Types:** Para valores que podem não existir
+
+#### Data Structures:
+- **Structs:** Definição de tipos customizados
+- **Enums:** Para tipos com variantes
+- **Maps:** Para armazenamento chave-valor
+- **Vec:** Para listas dinâmicas
+
+> **📚 Para exemplos práticos, comandos específicos e resultados dos testes, consulte o [README da Aula 4](./aula04/README.md)**
+
+### ✅ **Status da Aula 4: COMPLETA E FUNCIONAL**
+
+- ✅ **3 contratos implementados e testados:** Flipper, Increment, Task Manager
+- ✅ **Ambiente configurado:** Node local, friendbot, CLI atualizada
+- ✅ **Documentação atualizada:** Comandos corretos da versão mais recente
+- ✅ **Testes realizados:** Todas as funcionalidades funcionando perfeitamente
+
+## Aula 5
 
 - Noções avançadas de Soroban
 
