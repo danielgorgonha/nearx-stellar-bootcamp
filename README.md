@@ -1136,6 +1136,27 @@ Soroban oferece três tipos principais de storage, cada um com características 
 - **Estratégia:** Estender TTL antes que os dados expirem para evitar perda
 - **Exemplo:** `env.storage().instance().extend_ttl(50, 100)` - estende TTL para 100 ledgers
 
+##### **Implementação Prática de TTL no Token Contract**
+```rust
+// Constantes de TTL definidas em storage_types.rs
+pub(crate) const DAY_IN_LEDGERS: u32 = 17280;
+pub(crate) const INSTANCE_BUMP_AMOUNT: u32 = 7 * DAY_IN_LEDGERS;        // 7 dias
+pub(crate) const INSTANCE_LIFETIME_THRESHOLD: u32 = INSTANCE_BUMP_AMOUNT - DAY_IN_LEDGERS;
+
+pub(crate) const BALANCE_BUMP_AMOUNT: u32 = 30 * DAY_IN_LEDGERS;        // 30 dias
+pub(crate) const BALANCE_LIFETIME_THRESHOLD: u32 = BALANCE_BUMP_AMOUNT - DAY_IN_LEDGERS;
+
+// Uso em cada função do contrato
+e.storage()
+    .instance()
+    .extend_ttl(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
+```
+
+##### **Tipos de Extensão de TTL**
+- **Instance Storage:** `e.storage().instance().extend_ttl(threshold, bump_amount)`
+- **Persistent Storage:** `e.storage().persistent().extend_ttl(&key, threshold, bump_amount)`
+- **Temporary Storage:** `e.storage().temporary().extend_ttl(&key, threshold, bump_amount)`
+
 ##### **Arquivamento de Contratos**
 - **O que é:** Processo de desativar um contrato sem deletar seus dados
 - **Storage Persistente:** Dados persistentes continuam existindo mesmo após arquivamento
@@ -1229,6 +1250,28 @@ soroban contract archive CAPGL5BDXOPAND4PWDVY2KTAGJ6FUWPRNVKSVE2OLXPYYVQ7ZXRX2AA
   --network-passphrase "Standalone Network ; February 2017"
 ```
 
+### ⏰ **Comandos de Verificação de TTL:**
+
+#### **Verificar TTL do Contrato**
+```bash
+soroban contract show <CONTRACT_ID> --rpc-url <RPC_URL> --network-passphrase <PASSPHRASE>
+```
+
+#### **Verificar TTL de Dados Específicos**
+```bash
+# Para verificar TTL de balances (via função do contrato)
+soroban contract invoke --id <CONTRACT_ID> -- balance --id <ADDRESS>
+```
+
+#### **Monitoramento de TTL**
+```bash
+# Verificar ledger atual
+soroban config network show
+
+# Calcular quando TTL vai expirar
+# TTL atual + bump_amount = expiração
+```
+
 ### 🎯 **Estratégias de Otimização de Storage:**
 
 #### **1. Escolha Inteligente do Tipo de Storage**
@@ -1240,6 +1283,9 @@ soroban contract archive CAPGL5BDXOPAND4PWDVY2KTAGJ6FUWPRNVKSVE2OLXPYYVQ7ZXRX2AA
 - **Monitore TTL:** Acompanhe quando os dados vão expirar
 - **Extenda Proativamente:** Estenda TTL antes da expiração
 - **Estratégia de Threshold:** Configure thresholds apropriados para cada tipo de dado
+- **Threshold Calculation:** `threshold = bump_amount - safety_margin` (ex: 1 dia de segurança)
+- **Bump Amount:** Tempo total que o dado deve viver (ex: 7 dias para instance, 30 dias para persistent)
+- **Automatic Extension:** Chame `extend_ttl()` em cada função que acessa o storage
 
 #### **3. Otimização de Custos**
 - **Persistent Storage:** Mais caro, use com moderação
@@ -1263,6 +1309,13 @@ soroban contract archive CAPGL5BDXOPAND4PWDVY2KTAGJ6FUWPRNVKSVE2OLXPYYVQ7ZXRX2AA
 - **Instance Storage:** ❌ **Perdido** - Dados são limpos durante arquivamento
 - **Temporary Storage:** ❌ **Perdido** - Já não existe após execução da função
 - **TTL Management:** ⚠️ **Atenção** - TTL continua contando mesmo em contratos arquivados
+
+#### **7. Troubleshooting de TTL**
+- **Erro "Data Expired":** Dados expiraram, precisa estender TTL antes de usar
+- **Erro "TTL Too Low":** Threshold muito baixo, aumentar safety margin
+- **Performance Issues:** Muitas extensões de TTL, otimizar frequência
+- **Custos Altos:** TTL muito longo, reduzir bump_amount
+- **Prevenção:** Sempre chamar `extend_ttl()` em funções que acessam storage
 
 ## :memo: Licença
 
