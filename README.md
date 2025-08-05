@@ -1078,9 +1078,74 @@ soroban contract invoke \
 - ✅ **Documentação atualizada:** Comandos corretos da versão mais recente
 - ✅ **Testes realizados:** Todas as funcionalidades funcionando perfeitamente
 
-## Aula 5
+## Aula 5: Noções Avançadas de Soroban
 
-- Noções avançadas de Soroban
+### 🎯 **Objetivo da Aula 5**
+
+Esta aula foca em conceitos avançados de Soroban, incluindo implementação de tokens completos, padrões ERC-20, aliases para produtividade e operações complexas de smart contracts.
+
+### 📚 **Conceitos Avançados:**
+
+#### **1. Padrão ERC-20 Completo**
+- **Mint:** Criação de tokens
+- **Transfer:** Transferência direta
+- **Approve/TransferFrom:** Padrão de aprovação
+- **Balance:** Consultas de saldo
+- **Admin:** Controle administrativo
+
+#### **2. Produtividade Avançada**
+- **Aliases:** Configuração de atalhos para comandos
+- **Variáveis de ambiente:** Simplificação de comandos
+- **Workflow otimizado:** Processos eficientes
+
+#### **3. Operações de Token**
+- **Inicialização:** Configuração inicial do contrato
+- **Mint:** Criação de novos tokens
+- **Transfer:** Transferência entre contas
+- **Approve:** Autorização de gastos
+- **TransferFrom:** Transferência autorizada
+
+### 🏗️ **Contrato Token Implementado:**
+
+- **Estrutura modular:** Separação clara de responsabilidades
+- **Módulos:** admin, allowance, balance, contract, metadata, storage_types
+- **Interface:** TokenClient para interação
+- **Padrão completo:** Implementação ERC-20 completa
+
+### 📋 **Funcionalidades:**
+
+- ✅ **Deploy e Inicialização** de contratos token
+- ✅ **Mint de tokens** para diferentes contas
+- ✅ **Transferências diretas** entre contas
+- ✅ **Sistema de aprovação** (Approve/TransferFrom)
+- ✅ **Consultas de saldo** e informações administrativas
+- ✅ **Aliases configurados** para produtividade
+
+### 🚀 **Status:**
+
+- ✅ **Estrutura criada** e organizada
+- ✅ **Comandos atualizados** para versão mais recente
+- ✅ **Documentação completa** com exemplos práticos
+- ✅ **Funcionalidade básica testada** com sucesso
+
+### ✅ **Status da Aula 5: FUNCIONALIDADE BÁSICA TESTADA**
+
+**Contrato Deployado:** `CAPGL5BDXOPAND4PWDVY2KTAGJ6FUWPRNVKSVE2OLXPYYVQ7ZXRX2AAC`
+
+**Funcionalidades Testadas:**
+- ✅ **Deploy e Inicialização** do contrato token
+- ✅ **Mint de tokens** (100 DREX para alice)
+- ✅ **Transferência direta** (50 DREX de alice para bob)
+- ✅ **Burn de tokens** (10 DREX de bob)
+- ✅ **Consulta de metadados** (nome: RealDigital, símbolo: DREX, decimais: 2)
+- ✅ **Consulta de saldos** e emissão de eventos
+
+**Saldo Final:**
+- Alice: 50 DREX tokens
+- Bob: 40 DREX tokens
+- Total em circulação: 90 DREX tokens
+
+> **📚 Para comandos detalhados e resultados dos testes, consulte o [README da Aula 5](./aula05/README.md)**
 
 ## :memo: Licença
 
