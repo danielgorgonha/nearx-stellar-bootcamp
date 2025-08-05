@@ -1172,6 +1172,36 @@ e.storage()
 - **Interface:** TokenClient para interação
 - **Padrão completo:** Implementação ERC-20 completa
 
+### ⚠️ **Limitações e Melhorias Identificadas:**
+
+#### **1. Problemas com Initialize**
+- **Segurança:** Função `initialize` não é muito segura para produção
+- **Experiência:** Não é a melhor abordagem para deploy em produção
+- **Recomendação:** Usar SDKs (Python/JavaScript) para empacotar deploy + inicialização
+- **Vantagem SDK:** Tudo em uma única transação, mais seguro e eficiente
+
+#### **2. Impacto do EVM (Ethereum Virtual Machine)**
+- **Trait Interface:** Implementa padrão ERC-20 similar ao Ethereum
+- **Compatibilidade:** Mesmo sendo diferente da documentação ETH, é muito parecido
+- **Lógica dos Métodos:** Segue padrão ERC-20 mas com lógica específica do Soroban
+- **Diferenças:** Adaptações para o ambiente Stellar/Soroban
+
+#### **3. Recomendações para Produção**
+- **SDK Python/JavaScript:** Para deploy e inicialização empacotados
+- **Testes com SDK:** Melhor experiência de desenvolvimento
+- **Segurança:** Evitar initialize separado em produção
+- **Padrões:** Seguir padrões ERC-20 mas adaptados ao Soroban
+
+#### **4. Diferenças ERC-20 Ethereum vs Soroban**
+- **Environment:** EVM vs Soroban Environment
+- **Gas:** Ethereum gas vs Stellar fees
+- **Storage:** Ethereum storage vs Soroban storage types
+- **TTL:** Ethereum não tem TTL vs Soroban com TTL management
+- **Consensus:** PoW vs Stellar Consensus Protocol (SCP)
+- **Accounts:** Ethereum addresses vs Stellar addresses
+- **Events:** Ethereum events vs Soroban events
+- **Authorization:** Ethereum msg.sender vs Soroban require_auth()
+
 ### 💾 **Aplicação dos Tipos de Storage no Token:**
 
 #### **Persistent Storage (Principal)**
@@ -1224,6 +1254,279 @@ e.storage()
 - Total em circulação: 90 DREX tokens
 
 > **📚 Para comandos detalhados e resultados dos testes, consulte o [README da Aula 5](./aula05/README.md)**
+
+### 🚀 **Melhorias com SDKs:**
+
+#### **1. Deploy com Python SDK**
+```python
+from stellar_sdk import Server, Keypair, TransactionBuilder, Network
+from stellar_sdk.operation.invoke_host_function import InvokeHostFunction
+from stellar_sdk.operation.extend_footprint_ttl import ExtendFootprintTTL
+
+# Deploy + Initialize em uma única transação
+def deploy_token_with_initialize():
+    # 1. Deploy do contrato
+    # 2. Initialize com parâmetros
+    # 3. Tudo em uma transação atômica
+    pass
+```
+
+#### **2. Deploy com JavaScript SDK**
+```javascript
+const { SorobanRpc, TransactionBuilder, Networks } = require('stellar-sdk');
+
+// Deploy + Initialize empacotado
+async function deployTokenWithInitialize() {
+    // 1. Deploy do contrato WASM
+    // 2. Initialize com metadata
+    // 3. Transação única e segura
+}
+```
+
+#### **3. Vantagens dos SDKs**
+- **Atomicidade:** Deploy + Initialize em uma transação
+- **Segurança:** Evita race conditions e ataques
+- **Experiência:** Melhor DX (Developer Experience)
+- **Testes:** Mais fácil de testar e debugar
+- **Produção:** Pronto para ambiente real
+
+#### **4. Testes com SDKs**
+```python
+# Exemplo de teste com Python SDK
+def test_token_operations():
+    # Deploy com initialize
+    token_contract = deploy_token_with_initialize()
+    
+    # Testar operações
+    token_contract.mint(to=alice, amount=100)
+    token_contract.transfer(from=alice, to=bob, amount=50)
+    
+    # Verificar resultados
+    assert token_contract.balance(alice) == 50
+    assert token_contract.balance(bob) == 50
+```
+
+```javascript
+// Exemplo de teste com JavaScript SDK
+describe('Token Contract', () => {
+    it('should deploy and initialize correctly', async () => {
+        const token = await deployTokenWithInitialize();
+        expect(token.name()).toBe('RealDigital');
+        expect(token.symbol()).toBe('DREX');
+    });
+    
+    it('should handle mint and transfer', async () => {
+        await token.mint(alice, 100);
+        await token.transfer(alice, bob, 50);
+        
+        expect(await token.balance(alice)).toBe(50);
+        expect(await token.balance(bob)).toBe(50);
+    });
+});
+```
+
+### 🔄 **Arquitetura Completa: Rust + SDKs + Frontend**
+
+#### **1. Como Funciona a Integração:**
+
+##### **Rust (Smart Contract)**
+- **O que é:** Linguagem para escrever o smart contract
+- **Onde roda:** Compilado para WASM e executado na blockchain Stellar
+- **Função:** Define a lógica do contrato (mint, transfer, approve, etc.)
+
+```rust
+// aula05/contracts/token/src/lib.rs
+// Este é o smart contract em Rust
+pub struct Token;
+
+impl Token {
+    pub fn mint(e: Env, to: Address, amount: i128) {
+        // Lógica do mint
+    }
+    
+    pub fn transfer(e: Env, from: Address, to: Address, amount: i128) {
+        // Lógica do transfer
+    }
+}
+```
+
+##### **Python/JavaScript (SDK - Backend)**
+- **O que é:** Código para interagir com a blockchain Stellar
+- **Onde roda:** No seu computador/servidor (backend)
+- **Função:** Deploy, inicialização e interação com o contrato
+
+```python
+# deploy_token.py (Backend)
+from stellar_sdk import Server, Keypair, TransactionBuilder
+
+def deploy_and_initialize_token():
+    # 1. Compila o contrato Rust para WASM
+    # 2. Faz deploy do WASM na blockchain
+    # 3. Chama initialize() com os parâmetros
+    # 4. Tudo em uma única transação
+    pass
+```
+
+#### **2. Fluxo Completo de Desenvolvimento:**
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend       │    │   Blockchain    │
+│   (React/Vue)   │◄──►│   (Python/JS)   │◄──►│   (Stellar)     │
+│                 │    │                 │    │                 │
+│ - Interface     │    │ - Deploy        │    │ - Smart         │
+│ - Interação     │    │ - Initialize    │    │   Contract      │
+│ - Visualização  │    │ - API Calls     │    │   (Rust/WASM)   │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+#### **3. Exemplo Prático de Implementação:**
+
+##### **Passo 1: Desenvolver o Contrato (Rust)**
+```bash
+# Você escreve o contrato em Rust
+cd aula05/contracts/token
+cargo build --target wasm32-unknown-unknown --release
+# Gera: target/wasm32-unknown-unknown/release/token.wasm
+```
+
+##### **Passo 2: Deploy com SDK (Python/JavaScript)**
+```python
+# deploy_token.py
+import subprocess
+from stellar_sdk import SorobanRpc, TransactionBuilder
+
+# 1. Compilar o contrato Rust
+subprocess.run(["cargo", "build", "--target", "wasm32-unknown-unknown", "--release"])
+
+# 2. Ler o arquivo WASM
+with open("target/wasm32-unknown-unknown/release/token.wasm", "rb") as f:
+    wasm_bytes = f.read()
+
+# 3. Deploy + Initialize em uma transação
+def deploy_token():
+    # Deploy do WASM
+    deploy_op = InvokeHostFunction(
+        host_function=HostFunction.deploy_contract(wasm_bytes)
+    )
+    
+    # Initialize com parâmetros
+    init_op = InvokeHostFunction(
+        host_function=HostFunction.invoke_contract(
+            contract_id=deployed_contract_id,
+            function_name="initialize",
+            args=[admin, decimal, name, symbol]
+        )
+    )
+    
+    # Tudo em uma transação
+    transaction = TransactionBuilder(...)
+    transaction.add_operation(deploy_op)
+    transaction.add_operation(init_op)
+    transaction.submit()
+```
+
+#### **4. Arquitetura de Produção:**
+
+##### **Backend (Python) - Deploy Service:**
+```python
+# services/token_service.py
+class TokenService:
+    def deploy_token(self, name, symbol, decimal, admin):
+        # 1. Compila o contrato Rust
+        self.compile_rust_contract()
+        
+        # 2. Deploy + Initialize
+        contract_id = self.deploy_and_initialize(name, symbol, decimal, admin)
+        
+        # 3. Retorna o contract_id para o frontend
+        return contract_id
+    
+    def mint_tokens(self, contract_id, to, amount):
+        # Chama a função mint do contrato
+        return self.invoke_contract(contract_id, "mint", [to, amount])
+```
+
+##### **Frontend (JavaScript) - Interface:**
+```javascript
+// frontend/src/components/TokenDeploy.js
+class TokenDeploy {
+    async deployToken(name, symbol, decimal) {
+        // Chama o backend para fazer deploy
+        const response = await fetch('/api/deploy-token', {
+            method: 'POST',
+            body: JSON.stringify({ name, symbol, decimal })
+        });
+        
+        const { contract_id } = await response.json();
+        
+        // Salva o contract_id para usar depois
+        this.contractId = contract_id;
+    }
+    
+    async mintTokens(to, amount) {
+        // Chama o backend para mint
+        await fetch('/api/mint-tokens', {
+            method: 'POST',
+            body: JSON.stringify({
+                contract_id: this.contractId,
+                to, amount
+            })
+        });
+    }
+}
+```
+
+#### **5. Vantagens desta Abordagem:**
+
+##### **Segurança:**
+- Deploy + Initialize em uma transação atômica
+- Evita race conditions
+- Mais seguro que CLI manual
+
+##### **Produtividade:**
+- Automatiza o processo
+- Menos erros manuais
+- Melhor DX (Developer Experience)
+
+##### **Flexibilidade:**
+- Pode integrar com qualquer frontend
+- APIs RESTful para interação
+- Fácil de testar e debugar
+
+#### **6. Resumo da Arquitetura:**
+- **Rust:** Smart contract (lógica da blockchain)
+- **Python/JavaScript:** Backend (deploy e interação)
+- **Frontend:** Interface do usuário
+- **Stellar:** Blockchain (executa o contrato)
+
+**Analogia:** É como se você tivesse:
+- **Rust** = O "motor" (smart contract)
+- **Python/JS** = O "controlador" (deploy e API)
+- **Frontend** = O "painel" (interface do usuário)
+
+#### **7. Quando Usar Cada Abordagem:**
+
+##### **CLI (Soroban CLI) - Para Aprendizado/Testes:**
+- ✅ **Quando usar:** Desenvolvimento inicial, testes, aprendizado
+- ✅ **Vantagens:** Simples, direto, bom para entender conceitos
+- ❌ **Limitações:** Manual, propenso a erros, não é seguro para produção
+
+##### **SDKs (Python/JavaScript) - Para Produção:**
+- ✅ **Quando usar:** Aplicações reais, produção, integração com frontend
+- ✅ **Vantagens:** Automatizado, seguro, escalável, melhor DX
+- ✅ **Ideal para:** Deploy services, APIs, aplicações web/mobile
+
+##### **Exemplo de Decisão:**
+```bash
+# Desenvolvimento/Aprendizado
+soroban contract deploy --wasm token.wasm
+soroban contract invoke --id <ID> -- initialize --admin <ADMIN>
+
+# Produção
+python deploy_service.py  # Deploy + Initialize automático
+curl /api/deploy-token    # API para frontend
+```
 
 ### 🔧 **Comandos de Arquivamento:**
 
@@ -1316,6 +1619,29 @@ soroban config network show
 - **Performance Issues:** Muitas extensões de TTL, otimizar frequência
 - **Custos Altos:** TTL muito longo, reduzir bump_amount
 - **Prevenção:** Sempre chamar `extend_ttl()` em funções que acessam storage
+
+### 📚 **Lições Aprendidas da Aula 5:**
+
+#### **1. Limitações do CLI**
+- **Initialize Separado:** Não é ideal para produção
+- **Segurança:** Vulnerável a race conditions
+- **Experiência:** Processo manual e propenso a erros
+
+#### **2. Vantagens dos SDKs**
+- **Deploy + Initialize:** Tudo em uma transação
+- **Segurança:** Atomicidade garante consistência
+- **Produtividade:** Melhor DX e menos erros
+
+#### **3. Padrões ERC-20**
+- **Compatibilidade:** Muito similar ao Ethereum
+- **Adaptações:** Necessárias para ambiente Soroban
+- **Lógica:** Mesma funcionalidade, implementação diferente
+
+#### **4. Próximos Passos**
+- **Aprender SDKs:** Python e JavaScript
+- **Testes Avançados:** Com frameworks de teste
+- **Produção:** Implementar com SDKs
+- **Padrões:** Seguir melhores práticas de segurança
 
 ## :memo: Licença
 
