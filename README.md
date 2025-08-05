@@ -1136,6 +1136,14 @@ Soroban oferece três tipos principais de storage, cada um com características 
 - **Estratégia:** Estender TTL antes que os dados expirem para evitar perda
 - **Exemplo:** `env.storage().instance().extend_ttl(50, 100)` - estende TTL para 100 ledgers
 
+##### **Arquivamento de Contratos**
+- **O que é:** Processo de desativar um contrato sem deletar seus dados
+- **Storage Persistente:** Dados persistentes continuam existindo mesmo após arquivamento
+- **Storage Instance:** Dados de instância são perdidos quando o contrato é arquivado
+- **Recuperação:** Contratos arquivados podem ser "desarquivados" se necessário
+- **Custos:** Contratos arquivados ainda geram custos de storage para dados persistentes
+- **Comando:** `soroban contract archive <CONTRACT_ID>` - arquiva um contrato
+
 ### 🏗️ **Contrato Token Implementado:**
 
 - **Estrutura modular:** Separação clara de responsabilidades
@@ -1196,6 +1204,31 @@ Soroban oferece três tipos principais de storage, cada um com características 
 
 > **📚 Para comandos detalhados e resultados dos testes, consulte o [README da Aula 5](./aula05/README.md)**
 
+### 🔧 **Comandos de Arquivamento:**
+
+#### **Arquivar Contrato**
+```bash
+soroban contract archive <CONTRACT_ID> --rpc-url <RPC_URL> --network-passphrase <PASSPHRASE>
+```
+
+#### **Verificar Status do Contrato**
+```bash
+soroban contract show <CONTRACT_ID> --rpc-url <RPC_URL> --network-passphrase <PASSPHRASE>
+```
+
+#### **Desarquivar Contrato (se suportado)**
+```bash
+soroban contract restore <CONTRACT_ID> --rpc-url <RPC_URL> --network-passphrase <PASSPHRASE>
+```
+
+#### **Exemplo Prático**
+```bash
+# Arquivar o contrato token da Aula 5
+soroban contract archive CAPGL5BDXOPAND4PWDVY2KTAGJ6FUWPRNVKSVE2OLXPYYVQ7ZXRX2AAC \
+  --rpc-url "http://localhost:8000/soroban/rpc" \
+  --network-passphrase "Standalone Network ; February 2017"
+```
+
 ### 🎯 **Estratégias de Otimização de Storage:**
 
 #### **1. Escolha Inteligente do Tipo de Storage**
@@ -1217,6 +1250,19 @@ Soroban oferece três tipos principais de storage, cada um com características 
 - **Separação de Responsabilidades:** Diferentes tipos de storage para diferentes propósitos
 - **Lazy Loading:** Carregue dados apenas quando necessário
 - **Batch Operations:** Agrupe operações para otimizar custos
+
+#### **5. Estratégias de Arquivamento**
+- **Quando Arquivar:** Contratos que não são mais ativos mas precisam manter dados
+- **Backup de Dados:** Faça backup de dados importantes antes do arquivamento
+- **Planejamento de Recuperação:** Mantenha documentação para desarquivamento futuro
+- **Custos vs Benefícios:** Avalie se vale a pena manter dados persistentes arquivados
+- **Migração de Dados:** Considere migrar dados para novos contratos antes do arquivamento
+
+#### **6. Impacto do Arquivamento no Storage**
+- **Persistent Storage:** ✅ **Mantido** - Dados sobrevivem ao arquivamento
+- **Instance Storage:** ❌ **Perdido** - Dados são limpos durante arquivamento
+- **Temporary Storage:** ❌ **Perdido** - Já não existe após execução da função
+- **TTL Management:** ⚠️ **Atenção** - TTL continua contando mesmo em contratos arquivados
 
 ## :memo: Licença
 
