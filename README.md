@@ -1105,12 +1105,61 @@ Esta aula foca em conceitos avançados de Soroban, incluindo implementação de 
 - **Approve:** Autorização de gastos
 - **TransferFrom:** Transferência autorizada
 
+#### **4. Tipos de Storage em Soroban**
+Soroban oferece três tipos principais de storage, cada um com características específicas de tempo de vida e uso:
+
+##### **Instance Storage**
+- **Tempo de Vida:** Vive apenas durante a execução da transação
+- **Escopo:** Limitado ao contrato atual
+- **Uso:** Dados temporários, variáveis de estado durante execução
+- **Exemplo:** Contadores temporários, flags de estado durante operação
+- **Custo:** Mais barato, mas dados são perdidos após a transação
+
+##### **Persistent Storage**
+- **Tempo de Vida:** Sobrevive entre transações e até mesmo após upgrades do contrato
+- **Escopo:** Associado ao contrato específico
+- **Uso:** Dados que precisam persistir (saldos, configurações, estado global)
+- **Exemplo:** Balances de tokens, configurações administrativas, dados de usuários
+- **Custo:** Mais caro, mas dados são mantidos permanentemente
+- **TTL:** Pode ser estendido usando `extend_ttl()`
+
+##### **Temporary Storage**
+- **Tempo de Vida:** Muito curto, apenas durante a execução da função
+- **Escopo:** Limitado à função atual
+- **Uso:** Dados intermediários, cálculos temporários
+- **Exemplo:** Variáveis de loop, resultados intermediários de cálculos
+- **Custo:** Mais barato que persistent, mas dados são perdidos imediatamente
+
+##### **Gerenciamento de TTL (Time To Live)**
+- **TTL Threshold:** Define quando o TTL deve ser estendido
+- **TTL Extend:** Permite estender o tempo de vida dos dados persistentes
+- **Estratégia:** Estender TTL antes que os dados expirem para evitar perda
+- **Exemplo:** `env.storage().instance().extend_ttl(50, 100)` - estende TTL para 100 ledgers
+
 ### 🏗️ **Contrato Token Implementado:**
 
 - **Estrutura modular:** Separação clara de responsabilidades
 - **Módulos:** admin, allowance, balance, contract, metadata, storage_types
 - **Interface:** TokenClient para interação
 - **Padrão completo:** Implementação ERC-20 completa
+
+### 💾 **Aplicação dos Tipos de Storage no Token:**
+
+#### **Persistent Storage (Principal)**
+- **Balances:** Saldos dos usuários são armazenados persistentemente
+- **Allowances:** Autorizações de gasto entre usuários
+- **Admin:** Endereço do administrador do contrato
+- **Metadata:** Nome, símbolo e decimais do token
+
+#### **Instance Storage (Auxiliar)**
+- **Contadores temporários:** Durante operações de mint/burn
+- **Flags de estado:** Durante validações de operações
+- **Dados de transação:** Informações temporárias durante execução
+
+#### **Temporary Storage (Interno)**
+- **Cálculos intermediários:** Durante operações matemáticas
+- **Variáveis de loop:** Durante iterações em operações em lote
+- **Resultados temporários:** Durante validações e verificações
 
 ### 📋 **Funcionalidades:**
 
@@ -1146,6 +1195,28 @@ Esta aula foca em conceitos avançados de Soroban, incluindo implementação de 
 - Total em circulação: 90 DREX tokens
 
 > **📚 Para comandos detalhados e resultados dos testes, consulte o [README da Aula 5](./aula05/README.md)**
+
+### 🎯 **Estratégias de Otimização de Storage:**
+
+#### **1. Escolha Inteligente do Tipo de Storage**
+- **Use Persistent** apenas para dados que realmente precisam persistir
+- **Use Instance** para dados temporários durante transações
+- **Use Temporary** para cálculos intermediários
+
+#### **2. Gerenciamento Eficiente de TTL**
+- **Monitore TTL:** Acompanhe quando os dados vão expirar
+- **Extenda Proativamente:** Estenda TTL antes da expiração
+- **Estratégia de Threshold:** Configure thresholds apropriados para cada tipo de dado
+
+#### **3. Otimização de Custos**
+- **Persistent Storage:** Mais caro, use com moderação
+- **Instance Storage:** Custo médio, ideal para dados temporários
+- **Temporary Storage:** Mais barato, use para cálculos internos
+
+#### **4. Padrões de Design**
+- **Separação de Responsabilidades:** Diferentes tipos de storage para diferentes propósitos
+- **Lazy Loading:** Carregue dados apenas quando necessário
+- **Batch Operations:** Agrupe operações para otimizar custos
 
 ## :memo: Licença
 
